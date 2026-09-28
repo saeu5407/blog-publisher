@@ -1,0 +1,28 @@
+name: Tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.8.22'
+      - run: uv python install 3.12
+      - run: npm ci --ignore-scripts
+      - run: uv sync --frozen --project engines/naver --python 3.12
+      - run: npm run check
+      - run: npm run test:all
+      - run: npx playwright install --with-deps chromium
+      - run: BLOG_BROWSER_TEST=1 node --test test/naver-browser.test.js

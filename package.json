@@ -1,0 +1,22 @@
+{
+  "name": "blog-publisher",
+  "version": "0.1.0",
+  "description": "Local agent skill for publishing Markdown and Notion articles to Tistory and Naver Blog",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "blog": "node scripts/blog.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test test/*.test.js",
+    "setup:naver": "uv sync --frozen --project engines/naver && uv run --frozen --project engines/naver playwright install chromium",
+    "test:naver": "uv run --frozen --offline --directory engines/naver python -m unittest discover -s tests",
+    "test:all": "npm test && npm run test:naver"
+  },
+  "dependencies": {
+    "zod": "^3.25.0", "playwright": "1.63.0", "marked": "^15.0.0",
+    "turndown": "^7.2.0", "turndown-plugin-gfm": "^1.0.2", "cheerio": "^1.0.0",
+    "yaml": "^2.7.0", "sanitize-html": "^2.14.0", "image-size": "^2.0.0", "acorn": "^8.14.0"
+  }
+}
